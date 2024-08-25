@@ -8,7 +8,7 @@ import { OCConnect } from '@opencampus/ocid-connect-js';
 import { LoginCallBack } from '@opencampus/ocid-connect-js';
 import { useNavigate } from 'react-router-dom';
 const opts = {
-  redirectUri: 'https://educhaiin.netlify.app/dashboard/redirect',
+  redirectUri: 'https://educhaiin.netlify.app/redirect',
 }
 const LoginCallbackComponent = () => {
   const navigate = useNavigate();
