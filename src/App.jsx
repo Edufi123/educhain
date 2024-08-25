@@ -4,47 +4,43 @@ import Dashboard from './pages/dashboard.jsx';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { createWeb3Modal } from '@web3modal/wagmi/react'
-// import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
+import { OCConnect } from '@opencampus/ocid-connect-js';
+import { LoginCallBack } from '@opencampus/ocid-connect-js';
+import { useNavigate } from 'react-router-dom';
+const opts = {
+  redirectUri: 'http://localhost:5173/dashboard',
+}
+const LoginCallbackComponent = () => {
+  const navigate = useNavigate();
 
-// import { WagmiConfig } from 'wagmi'
-// import { arbitrum, polygon, optimism, mainnet } from 'wagmi/chains'
-AOS.init();
-// const projectId = '4a8a24d94e714b4a3640be30ac65b887'
+  const loginSuccess = () => {
+    // Redirect to the dashboard after successful login
+    navigate('/dashboard');
+  };
 
-// const metadata = {
-//   name: 'Web3Modal',
-//   description: 'Web3Modal Example',
-//   url: 'https://web3modal.com',
-//   icons: ['https://avatars.githubusercontent.com/u/37784886']
-// }
-
-// const chains = [mainnet, polygon, optimism, arbitrum]
-// const wagmiConfig = defaultWagmiConfig({
-//   chains,
-//   projectId,
-//   metadata: {
-//     name:text
-//   }
-// })
-
-// createWeb3Modal({
-//   metadata,
-//   wagmiConfig,
-//   projectId,
-//   enableAnalytics: true
-// })
-function App() {
+  const loginError = () => {
+    // Handle login error (optional)
+    console.error('Login failed');
+  };
 
   return (
+    <LoginCallBack errorCallback={loginError} successCallback={loginSuccess} />
+  );
+};
+AOS.init();
+function App() {
+  return (
     <>
+    <OCConnect opts={opts} sandboxMode={true}>
       <BrowserRouter>
-          <Routes>
-              <Route index element={<LandingPage />} />
-              <Route path="/home" element={<LandingPage />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
-        </BrowserRouter>
+            <Routes>
+                <Route index element={<LandingPage />} />
+                <Route path="/home" element={<LandingPage />} />
+                <Route path="/redirect" element={<LoginCallbackComponent/>} />
+                <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
+      </BrowserRouter>
+    </OCConnect>
     </>
   )
 }

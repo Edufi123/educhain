@@ -1,5 +1,4 @@
 import Navbar from '../components/nav.jsx';
-
 function Dashboard () {
     return (
        <>
